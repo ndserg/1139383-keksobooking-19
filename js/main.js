@@ -1,13 +1,13 @@
 'use strict';
 var LEADING_ZERO = 10;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var MIN_MAP_WIDTH = 0;
+var MAX_MAP_WIDTH = 1200;
+var MIN_MAP_HEIGHT = 130;
+var MAX_MAP_HEIGHT = 630;
+var ADVERT_NUMBER = 8;
 
-var pinWidth = 50;
-var pinHeight = 70;
-var minMapWidth = 0;
-var maxMapWidth = 1200;
-var minMapHeight = 130;
-var maxMapHeight = 630;
-var advertNumber = 8;
 var adverts = [];
 var houseTypes = ['palace', 'flat', 'house', 'bungalo'];
 var bookingTimes = ['12:00', '13:00', '14:00'];
@@ -18,7 +18,7 @@ var pinsBlock = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 map.classList.remove('map--faded');
-adverts.length = advertNumber;
+adverts.length = ADVERT_NUMBER;
 
 //  Генератор случайных чисел
 var randomNumber = function getRandomInt(min, max) {
@@ -27,13 +27,17 @@ var randomNumber = function getRandomInt(min, max) {
 
 //  Случайная выборка из массива
 var getRandomList = function (sourceList) {
-  var randomList = [];
-  randomList.length = randomNumber(1, sourceList.length);
-  for (var i = 0; i < randomList.length; i++) {
-    randomList[i] = sourceList[randomNumber(0, sourceList.length - 1)];
-  }
+  var randomList = sourceList.slice();
 
-  return randomList;
+  randomList.forEach(function (item, index) {
+    var j = randomNumber(0, randomList.length - 1);
+    var temp = randomList[index];
+    randomList[index] = randomList[j];
+    randomList[j] = temp;
+    return randomList;
+  });
+
+  randomList.length = randomNumber(1, sourceList.length);
 };
 
 //  Создаем массив обектов (объявлений)
@@ -57,8 +61,8 @@ var addAdvert = function () {
       photos: getRandomList(photosList),
     },
     location: {
-      x: randomNumber(minMapWidth, maxMapWidth),
-      y: randomNumber(minMapHeight, maxMapHeight),
+      x: randomNumber(MIN_MAP_WIDTH, MAX_MAP_WIDTH),
+      y: randomNumber(MIN_MAP_HEIGHT, MAX_MAP_HEIGHT),
     }
     };
     adverts[i].offer.address = adverts[i].location.x + ',' + adverts[i].location.y;
@@ -70,15 +74,15 @@ var addAdvert = function () {
 addAdvert();
 
 //  Отрисовываем сгенерированные DOM-элементы в блок .map__pins
-for (var n = 0; n < adverts.length; n++) {
+adverts.forEach(function (item, n) {
   var pinElement = pinTemplate.cloneNode(true);
   var avatarImg = pinElement.querySelector('img');
 
-  pinElement.style.left = (adverts[n].location.x < pinWidth ? adverts[n].location.x + 'px' : (adverts[n].location.x - pinWidth) + 'px');
-  pinElement.style.top = (adverts[n].location.y < pinHeight ? adverts[n].location.y + 'px' : (adverts[n].location.y - pinHeight) + 'px');
+  pinElement.style.left = (adverts[n].location.x < PIN_WIDTH ? adverts[n].location.x + 'px' : (adverts[n].location.x - PIN_WIDTH) + 'px');
+  pinElement.style.top = (adverts[n].location.y < PIN_HEIGHT ? adverts[n].location.y + 'px' : (adverts[n].location.y - PIN_HEIGHT) + 'px');
 
   avatarImg.src = adverts[n].author.avatar;
   avatarImg.alt = adverts[n].offer.title;
 
   pinsBlock.appendChild(pinElement);
-}
+});
