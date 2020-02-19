@@ -43,9 +43,8 @@ function checkCapacity() {
     capacityInput.setCustomValidity('Не для гостей!');
   } else if (capacityInput.value > roomsInput.value) {
     capacityInput.setCustomValidity('Слишко много гостей!');
-    console.log('Слишко много гостей!');
   } else {
-    capacityInput.setCustomValidity("");
+    capacityInput.setCustomValidity('');
   }
 
 }
