@@ -10,6 +10,7 @@ var MAX_MAP_WIDTH = 1200;
 var MIN_MAP_HEIGHT = 130;
 var MAX_MAP_HEIGHT = 630;
 var ADVERT_NUMBER = 8;
+var ENTER_KEY = 'Enter';
 
 var adverts = [];
 var houseTypes = ['palace', 'flat', 'house', 'bungalo'];
@@ -173,12 +174,18 @@ adFormAddress.setAttribute('value', getCoordinates(mapPinMain, MAIN_PIN_WIDTH, M
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     mapActivation();
+  }
+});
 
-    adFormAddress.setAttribute('value', getCoordinates(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT).itemX + ', ' + getCoordinates(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT + PIN_POINTER_HEIGHT).itemY);
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    mapActivation();
   }
 });
 
 var mapActivation = function () {
+  //  Значение поля адрес при открытии страницы с учетом размера указателя
+  adFormAddress.setAttribute('value', getCoordinates(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT).itemX + ', ' + getCoordinates(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT + PIN_POINTER_HEIGHT).itemY);
 
   // Активируем карту и поля форм
   removeClassOfElement(map, 'map--faded');
