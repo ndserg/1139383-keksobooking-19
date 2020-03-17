@@ -8,6 +8,7 @@
   var timeInInput = adForm.querySelector('#timein');
   var timeOutInput = adForm.querySelector('#timeout');
   var filtersForm = document.querySelector('.map__filters');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
 
   //  Проверяем соответствие количества комнат - количеству гостей
   roomsInput.onchange = checkCapacity;
@@ -72,4 +73,15 @@
   window.util.addClassOfElement(adForm, 'ad-form--disabled');
   window.util.formControlsToggle('add', adForm.elements, 'disabled', 'disabled');
   window.util.formControlsToggle('add', filtersForm.elements, 'disabled', 'disabled');
+
+  // отправляем данные формы
+  adForm.addEventListener('submit', function (evt) {
+    window.save(new FormData(adForm), function () {});
+    evt.preventDefault();
+  });
+
+  adFormReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+  });
 })();
