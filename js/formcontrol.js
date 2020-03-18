@@ -69,14 +69,14 @@
     timeInInput[timeOutInput.selectedIndex].setAttribute('selected', true);
   }
 
-  window.util.addClassOfElement(window.map, 'map--faded');
+  window.util.addClassOfElement(window.data.map, 'map--faded');
   window.util.addClassOfElement(adForm, 'ad-form--disabled');
   window.util.formControlsToggle('add', adForm.elements, 'disabled', 'disabled');
   window.util.formControlsToggle('add', filtersForm.elements, 'disabled', 'disabled');
 
   // отправляем данные формы
   adForm.addEventListener('submit', function (evt) {
-    window.save(new FormData(adForm), function () {});
+    window.backend.saveData(new FormData(adForm), function () {}, function () {});
     evt.preventDefault();
   });
 

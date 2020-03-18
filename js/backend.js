@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var ESC_KEY = 'Escape';
+  var TIMEOUT_IN_MS = 10000;
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
   var main = document.querySelector('main');
@@ -14,9 +14,8 @@
   var StatusCode = {
     OK: 200
   };
-  var TIMEOUT_IN_MS = 10000;
 
-  window.load = function (onLoad, onError) {
+  var loadData = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -42,7 +41,7 @@
     xhr.send();
   };
 
-  window.save = function (data, onLoad) {
+  var saveData = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -51,36 +50,45 @@
         onLoad(xhr.response);
         messageHandler(successMessage);
       } else {
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
         messageHandler(errorMessage);
       }
     });
 
-    function messageHandler(element) {
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка отправки данных');
+    });
+
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
+
+    var messageHandler = function (element) {
       window.messageElement = main.appendChild(element);
       document.addEventListener('keydown', onButtonPress);
-      document.addEventListener('click', onClick);
+      document.addEventListener('click', onWindowClick);
       if (element === errorMessage) {
         errorButton.addEventListener('click', onErrorButtonClick);
       }
-    }
+    };
 
     function closeMesssage(element) {
       element.remove();
       document.removeEventListener('keydown', onButtonPress);
-      document.removeEventListener('click', onClick);
+      document.removeEventListener('click', onWindowClick);
       if (element.classList.contains('success')) {
         document.location.reload(true);
       }
     }
 
     var onButtonPress = function (evt) {
-      if (evt.key === ESC_KEY) {
+      if (evt.key === window.data.ESC_KEY) {
         evt.preventDefault();
         closeMesssage(window.messageElement);
       }
     };
 
-    var onClick = function () {
+    var onWindowClick = function () {
       closeMesssage(window.messageElement);
     };
 
@@ -92,5 +100,10 @@
 
     xhr.open('POST', UPLOAD_URL);
     xhr.send(data);
+  };
+
+  window.backend = {
+    'loadData': loadData,
+    'saveData': saveData
   };
 })();
