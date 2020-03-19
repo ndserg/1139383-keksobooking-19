@@ -19,6 +19,7 @@
 
         mapCard.style.visibility = 'visible';
 
+        // закрываем карточку объявления
         var closeMapCard = mapCard.querySelector('.popup__close');
 
         var closeCardOnEsc = function (closekey) {
