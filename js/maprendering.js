@@ -56,21 +56,21 @@
       var advertAvatar = cardElement.querySelector('.popup__avatar');
 
       // данные для Pins
-      pinElement.style.left = (adverts[n].location.x < PIN_WIDTH) ? adverts[n].location.x + 'px' : (adverts[n].location.x - PIN_WIDTH) + 'px';
-      pinElement.style.top = (adverts[n].location.y < PIN_HEIGHT) ? adverts[n].location.y + 'px' : (adverts[n].location.y - PIN_HEIGHT) + 'px';
+      pinElement.style.left = (item.location.x < PIN_WIDTH) ? item.location.x + 'px' : (item.location.x - PIN_WIDTH) + 'px';
+      pinElement.style.top = (item.location.y < PIN_HEIGHT) ? item.location.y + 'px' : (item.location.y - PIN_HEIGHT) + 'px';
 
-      avatarImg.src = adverts[n].author.avatar;
-      avatarImg.alt = adverts[n].offer.title;
+      avatarImg.src = item.author.avatar;
+      avatarImg.alt = item.offer.title;
 
       // данные для Cards
-      advertTitle.textContent = adverts[n].offer.title;
-      advertAddress.textContent = adverts[n].offer.address;
-      advertPrice.textContent = adverts[n].offer.price + '₽/ночь';
-      advertHouseType.textContent = getHouseType(adverts[n].offer.type);
-      advertRoomAndGuest.textContent = adverts[n].offer.rooms + window.util.numbersEnding(adverts[n].offer.rooms, [' комната', ' комнаты', ' комнат']) + ' для ' + adverts[n].offer.guests + window.util.numbersEnding(adverts[n].offer.guests, [' гостя', ' гостей', ' гостей']);
-      advertCheckTime.textContent = 'Заезд после ' + adverts[n].offer.checkin + ', выезд до ' + adverts[n].offer.checkout;
-      advertDescription.textContent = adverts[n].offer.description;
-      advertAvatar.src = adverts[n].author.avatar;
+      advertTitle.textContent = item.offer.title;
+      advertAddress.textContent = item.offer.address;
+      advertPrice.textContent = item.offer.price + '₽/ночь';
+      advertHouseType.textContent = getHouseType(item.offer.type);
+      advertRoomAndGuest.textContent = item.offer.rooms + window.util.numbersEnding(item.offer.rooms, [' комната', ' комнаты', ' комнат']) + ' для ' + item.offer.guests + window.util.numbersEnding(item.offer.guests, [' гостя', ' гостей', ' гостей']);
+      advertCheckTime.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
+      advertDescription.textContent = item.offer.description;
+      advertAvatar.src = item.author.avatar;
 
       // очищаем список feature
       while (advertFeatures.firstChild) {
@@ -78,7 +78,7 @@
       }
 
       // добавляем элементы в список feature
-      adverts[n].offer.features.forEach(function (feature) {
+      item.offer.features.forEach(function (feature) {
         var advertFeaturesItem = document.createElement('li');
 
         advertFeaturesItem.className = 'popup__feature';
@@ -93,7 +93,7 @@
       }
 
       // добавляем элементы в блок photos
-      adverts[n].offer.photos.forEach(function (photo) {
+      item.offer.photos.forEach(function (photo) {
         var advertPhotosItem = document.createElement('img');
 
         advertPhotosItem.className = 'popup__photo';

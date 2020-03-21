@@ -18,8 +18,7 @@
   // загружаем данные объявлений
   var successHandler = function (adverts) {
     window.allAdverts = adverts;
-    window.adverts = adverts.slice();
-    window.adverts.length = ADVERT_NUMBER;
+    window.adverts = adverts.slice(0, ADVERT_NUMBER);
   };
 
   mapPinFilter.addEventListener('change', onHouseTypeChange);
@@ -27,8 +26,8 @@
   function onHouseTypeChange() {
     // закрываем карточки объявлений
     var mapCards = window.data.map.querySelectorAll('.map__card');
-    mapCards.forEach(function (item, i) {
-      mapCards[i].style.visibility = 'hidden';
+    mapCards.forEach(function (item) {
+      item.style.visibility = 'hidden';
       return mapCards;
     });
 
